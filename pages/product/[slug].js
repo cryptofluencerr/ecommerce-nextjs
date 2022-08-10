@@ -4,14 +4,10 @@ import data from "../../utils/data";
 import Image from "next/image";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import Product from "../../utils/models/Product";
 
-function ProductScreen() {
+function ProductScreen({ product }) {
   const router = useRouter();
-
-  const { slug } = router.query;
-
-  const product = data.find((a) => a.id == slug);
-  console.log(product);
 
   if (!product) {
     return <div>Product Not Found!</div>;
@@ -22,12 +18,12 @@ function ProductScreen() {
       <Navbar />
       <div
         className="flex flex-col justify-center sm:justify-around sm:flex-row py-8 mb-10 
-        px-10 mx-5 text-start sm:space-x-5 space-y-5 "
+        sm:px-10 mx-5 text-start sm:space-x-5 space-y-8 "
       >
         <div className="flex flex-col text-start">
           <span
             onClick={() => router.push("/")}
-            className="cursor-pointer text-[#f0c000] font-bold text-lg"
+            className="cursor-pointer text-[#f0c000] font-bold text-lg mb-3"
           >
             back to products
           </span>
@@ -39,15 +35,18 @@ function ProductScreen() {
             className="object-contain rounded-lg"
           />
         </div>
-        <div className="flex flex-col font-medium py-2 leading-relaxed sm:w-1/3 sm:pl-5">
-          <p className="text-2xl font-bold py-4">{product.name}</p>
+        <div
+          className="flex flex-col font-medium leading-relaxed 
+        sm:w-1/4 sm:pl-5"
+        >
+          <p className="text-2xl font-bold py-2 pb-2">{product.name}</p>
           <p>Category: {product.category}</p>
           <p>Brand: {product.brand}</p>
           <p>Ratings: {product.ratings}</p>
           <p>Description: {product.description}</p>
         </div>
         <div
-          className="flex flex-col font-medium space-y-5 p-3 
+          className="flex flex-col font-medium space-y-5 p-2 
         leading-relaxed border-b-2 sm:w-1/3 h-1/2 bg-white"
         >
           <div className="flex flex-col ">
@@ -68,3 +67,12 @@ function ProductScreen() {
 }
 
 export default ProductScreen;
+
+export async function getServerSideProps(context) {
+  const { params } = context;
+  const { slug } = params;
+
+  const data = await Product.findOne({ slug }).lean();
+
+  return { props: { product: JSON.parse(JSON.stringify(data)) } };
+}

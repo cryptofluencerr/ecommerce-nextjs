@@ -2,8 +2,10 @@ import Head from "next/head";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Container from "../components/Container";
+import Product from "../utils/models/Product";
+import connectDb from "../utils/db";
 
-export default function Home() {
+export default function Home({ products }) {
   return (
     <div>
       <Head>
@@ -14,11 +16,18 @@ export default function Home() {
 
       <Navbar />
       <main>
-
-          <Container className="h-[100vh]" />
-   
+        <Container products={products} className="h-[100vh]" />
       </main>
       <Footer />
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  const data = await Product.find({}).lean();
+
+  // const data = await fetch(`${process.env.URL}/api/products`);
+  // const products = await data.json();
+
+  return { props: { products: JSON.parse(JSON.stringify(data)) } };
 }
