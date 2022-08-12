@@ -28,6 +28,5 @@ export async function getServerSideProps() {
 
   // const data = await fetch(`${process.env.URL}/api/products`);
   // const products = await data.json();
-
   return { props: { products: JSON.parse(JSON.stringify(data)) } };
 }

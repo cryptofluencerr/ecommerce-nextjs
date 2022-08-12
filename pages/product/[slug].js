@@ -6,8 +6,13 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import Product from "../../utils/models/Product";
 
-function ProductScreen({ product }) {
+function ProductScreen({product}) {
   const router = useRouter();
+
+  // const { slug } = router.query;
+
+  // const product = data.find((a) => a.slug == slug);
+  // console.log(product);
 
   if (!product) {
     return <div>Product Not Found!</div>;
