@@ -2,30 +2,37 @@ import mongoose from "mongoose";
 
 const connection = {};
 
-const connectDb = (handler) => async (req, res) => {
-  if (mongoose.connections[0].readyState) {
-    console.log("Already connected");
-    return handler(req, res);
+async function connect() {
+  if (connection.isConnected) {
+    console.log("already connected");
+    return;
   }
-
-  await mongoose.connect(process.env.MONGO_URI, {
+  if (mongoose.connections.length > 0) {
+    connection.isConnected = mongoose.connections[0].readyState;
+    if (connection.isConnected === 1) {
+      console.log("use previous connection");
+      return;
+    }
+    await mongoose.disconnect();
+  }
+  const db = await mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
-  console.log("New Connection");
-  return handler(req, res);
-};
+  console.log("new connection");
+  connection.isConnected = db.connections[0].readyState;
+}
 
-const disconnectDb = async () => {
-  if (mongoose.connections[0].readyState) {
+async function disconnect() {
+  if (connection.isConnected) {
     if (process.env.NODE_ENV === "production") {
       await mongoose.disconnect();
       connection.isConnected = false;
     } else {
-      console.log("Not Disconnected");
+      console.log("not disconnected");
     }
   }
-};
+}
 
 function convertDocToObj(doc) {
   doc._id = doc._id.toString();
@@ -34,5 +41,5 @@ function convertDocToObj(doc) {
   return doc;
 }
 
-export default connectDb;
-export { disconnectDb, convertDocToObj };
+const db = { connect, disconnect, convertDocToObj };
+export default db;

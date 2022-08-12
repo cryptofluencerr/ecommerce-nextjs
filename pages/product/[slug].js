@@ -5,8 +5,9 @@ import Image from "next/image";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import Product from "../../utils/models/Product";
+import db from "../../utils/db";
 
-function ProductScreen({product}) {
+function ProductScreen({ product }) {
   const router = useRouter();
 
   // const { slug } = router.query;
@@ -77,7 +78,12 @@ export async function getServerSideProps(context) {
   const { params } = context;
   const { slug } = params;
 
-  const data = await Product.findOne({ slug }).lean();
-
-  return { props: { product: JSON.parse(JSON.stringify(data)) } };
+  await db.connect();
+  const product = await Product.findOne({ slug }).lean();
+  await db.disconnect();
+  return {
+    props: {
+      product: db.convertDocToObj(product),
+    },
+  };
 }

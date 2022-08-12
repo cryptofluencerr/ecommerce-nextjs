@@ -1,14 +1,14 @@
-import productSchema from "../../../utils/models/Product";
-import connectDB from "../../../utils/db";
+import Product from "../../../utils/models/Product";
+import db from "../../../utils/db";
 
 const handler = async (req, res) => {
   const { method } = req;
-
+  db.connect();
   switch (method) {
     case "GET":
       try {
-        const newProduct = await productSchema.find({});
-
+        const newProduct = await Product.find({});
+        db.disconnect();
         return res.status(200).json({ data: newProduct });
       } catch (error) {
         res.status(400).json({ success: false });
@@ -18,4 +18,4 @@ const handler = async (req, res) => {
   }
 };
 
-export default connectDB(handler);
+export default handler;

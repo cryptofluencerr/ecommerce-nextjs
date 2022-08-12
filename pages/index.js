@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Container from "../components/Container";
 import Product from "../utils/models/Product";
-import connectDb from "../utils/db";
+import db from "../utils/db";
 
 export default function Home({ products }) {
   return (
@@ -23,10 +23,25 @@ export default function Home({ products }) {
   );
 }
 
-export async function getServerSideProps() {
-  const data = await Product.find({}).lean();
+// export async function getServerSideProps() {
+//   const products = await Product.find({}).lean();
 
-  // const data = await fetch(`${process.env.URL}/api/products`);
-  // const products = await data.json();
-  return { props: { products: JSON.parse(JSON.stringify(data)) } };
+//   // const data = await fetch(`${process.env.URL}/api/products`);
+//   // const items = await data.json();
+//   // console.log(JSON.parse(JSON.stringify(data)));
+//   // const items = JSON.parse(JSON.stringify(data));
+//   return {
+//     props: { products: products.map(db.convertDocToObj  ) },
+//   };
+// }
+
+export async function getServerSideProps() {
+  await db.connect();
+  const products = await Product.find({}).lean();
+  await db.disconnect();
+  return {
+    props: {
+      products: products.map(db.convertDocToObj),
+    },
+  };
 }
