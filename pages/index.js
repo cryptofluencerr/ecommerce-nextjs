@@ -1,6 +1,4 @@
 import Head from "next/head";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import Container from "../components/Container";
 import Product from "../utils/models/Product";
 import db from "../utils/db";
@@ -14,11 +12,9 @@ export default function Home({ products }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar />
       <main>
         <Container products={products} className="h-[100vh]" />
       </main>
-      <Footer />
     </div>
   );
 }

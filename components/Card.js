@@ -2,10 +2,21 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ShoppingCartIcon } from "@heroicons/react/solid";
+import { useContext } from "react";
+import { Store } from "../utils/Store";
 
 function Card({ detail }) {
+  const { state } = useContext(Store);
+  const { darkMode } = state;
+
   return (
-    <div>
+    <div
+      className={
+        darkMode
+          ? `bg-gray-800 py-2 px-1 rounded-lg`
+          : `bg-white py-2 px-1 rounded-lg border-b-2`
+      }
+    >
       <Link href={`/product/${detail.slug}`}>
         <a>
           <Image

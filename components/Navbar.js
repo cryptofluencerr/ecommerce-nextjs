@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { ShoppingCartIcon } from "@heroicons/react/solid";
+import DarkModeSwitch from "./DarkModeSwitch";
 
 function Navbar() {
   return (
@@ -15,6 +16,7 @@ function Navbar() {
       </Link>
       <nav className=" sm:inline-flex sm:mx-5 text-gray-400">
         <div className="p-2 text-xl">
+          <DarkModeSwitch />
           <Link href="/login">
             <a className="sm:mx-6 mr-6 hover:underline hover:text-white">
               Login
