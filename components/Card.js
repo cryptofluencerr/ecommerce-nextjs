@@ -6,16 +6,17 @@ import { ShoppingCartIcon } from "@heroicons/react/solid";
 function Card({ detail }) {
   return (
     <div>
-      <a href={`/product/${detail.slug}`}>
-        <Image
-          className="rounded-lg object-cover cursor-pointer"
-          src={detail.image}
-          width={500}
-          height={500}
-          alt={detail.name}
-        />
-      </a>
-
+      <Link href={`/product/${detail.slug}`}>
+        <a>
+          <Image
+            className="rounded-lg object-cover cursor-pointer"
+            src={detail.image}
+            width={500}
+            height={500}
+            alt={detail.name}
+          />
+        </a>
+      </Link>
       <div className="sm:text-start text-oncenter sm:pl-3 font-medium leading-relaxed">
         <span className="cursor-pointer text-lg">{detail.name}</span>
         <span className="flex flex-col sm:flex-row sm:justify-between justify-center items-center sm:pr-5 sm:pt-2 font-medium">
