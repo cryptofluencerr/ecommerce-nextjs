@@ -17,6 +17,7 @@ function Card({ detail }) {
           />
         </a>
       </Link>
+
       <div className="sm:text-start text-oncenter sm:pl-3 font-medium leading-relaxed">
         <span className="cursor-pointer text-lg">{detail.name}</span>
         <span className="flex flex-col sm:flex-row sm:justify-between justify-center items-center sm:pr-5 sm:pt-2 font-medium">

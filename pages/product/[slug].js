@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import data from "../../utils/data";
 import Image from "next/image";
 import Navbar from "../../components/Navbar";
@@ -27,11 +28,10 @@ function ProductScreen({ product }) {
         sm:px-10 mx-5 text-start sm:space-x-5 space-y-8 "
       >
         <div className="flex flex-col text-start">
-          <span
-            onClick={() => router.push("/")}
-            className="cursor-pointer text-[#f0c000] font-bold text-lg mb-3"
-          >
-            back to products
+          <span className="cursor-pointer text-[#f0c000] font-bold text-lg mb-3">
+            <Link href="/">
+              <a>back to products</a>
+            </Link>
           </span>
           <Image
             src={product.image}
